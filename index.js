@@ -25,7 +25,6 @@ app.get("/holidays", (req, res) => {
 
 app.get("/is-today-holiday", (req, res) => {
   const hoje = new Date();
-  //   console.log(hoje.toLocaleDateString());
 
   const holidays = [
     { date: "01/01/2022", name: "Confraternização mundial" },
@@ -41,13 +40,15 @@ app.get("/is-today-holiday", (req, res) => {
     { date: "25/12/2022", name: "Natal" },
   ];
 
-  res.send(
-    holidays.map((h) =>
-      h.date === hoje.toLocaleDateString
-        ? `Sim, hoje é ${h.name}`
-        : `Não, hoje não é feriado`
-    )
+  const verificaFeriado = holidays.find(
+    (holiday) => holiday.date === hoje.toLocaleDateString()
   );
+
+  if (verificaFeriado) {
+    return res.send(`Sim, hoje é ${verificaFeriado.name}`);
+  }
+
+  res.send(`Não, hoje não é feriado`);
 });
 
 app.listen(4000);
